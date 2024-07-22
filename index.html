@@ -7,12 +7,19 @@
     <style>
       body {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 100vh;
         margin: 0;
         font-family: Arial, sans-serif;
         background-color: #f0f0f0;
+      }
+
+      .note-display {
+        font-size: 24px;
+        margin-bottom: 20px;
+        height: 30px;
       }
 
       .keyboard {
@@ -34,6 +41,19 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         transition: background 0.2s;
       }
+      .keyN {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        margin: 5px;
+        background: rgb(220, 118, 51 );
+        text-align: center;
+        line-height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background 0.2s;
+      }
 
       .key:active {
         background: darkblue;
@@ -47,17 +67,20 @@
       .row1 {
         grid-row: 1;
       }
-
+      
       .row2 {
         grid-row: 2;
       }
+     
 
       .row3 {
         grid-row: 3;
       }
+      
     </style>
   </head>
   <body>
+    <div class="note-display" id="noteDisplay"></div>
     <div class="keyboard">
       <div class="row1 key" data-note="Q">Q</div>
       <div class="row1 key" data-note="W">W</div>
@@ -68,18 +91,19 @@
       <div class="row1 key" data-note="U">U</div>
       <div class="row1 key" data-note="I">I</div>
       <div class="row1 key" data-note="O">O</div>
-      <div class="row1 key" data-note="P">P</div>
+      <div class="row1 keyN" data-note="P">P</div>
+      
 
       <div class="row2 key" data-note="A">A</div>
       <div class="row2 key" data-note="S">S</div>
       <div class="row2 key" data-note="D">D</div>
-      <div class="row2 key" data-note="F">F</div>
+      <div class="row2 keyN" data-note="F">F</div>
       <div class="row2 key" data-note="G">G</div>
       <div class="row2 key" data-note="H">H</div>
       <div class="row2 key" data-note="J">J</div>
-      <div class="row2 key" data-note="K">K</div>
+      <div class="row2 keyN" data-note="K">K</div>
       <div class="row2 key" data-note="L">L</div>
-      <div class="row2 key" data-note="Ñ">Ñ</div>
+      
 
       <div class="row3 key" data-note="Z">Z</div>
       <div class="row3 key" data-note="X">X</div>
@@ -96,35 +120,31 @@
       const audioContext = new AudioContext();
 
       const notes = {
-        Q: "C6",
-        W: "C#6",
-        E: "D6",
-        R: "D#6",
-        T: "E6",
-        Y: "F6",
-        U: "F#6",
-        I: "G6",
-        O: "G#6",
-        P: "A6",
-        A: "A#6",
-        S: "B6",
-        D: "C7",
-        F: "C#7",
-        G: "D7",
-        H: "D#7",
-        J: "E7",
-        K: "F7",
-        L: "F#7",
-        Ñ: "G7",
-        Z: "G#7",
-        X: "A7",
-        C: "A#7",
-        V: "B7",
-        B: "C8",
-        N: "C#8",
-        M: "D8",
-        ",": "D#8",
-        ".": "E8",
+        Z: "C6",
+        S: "C#6",
+        X: "D6",
+        D: "D#6",
+        C: "E6",
+        V: "F6",
+        G: "F#6",
+        B: "G6",
+        H: "G#6",
+        N: "A6",
+        J: "A#6",
+        M: "B6",
+        ",": "C7",
+        L: "C#7",
+        ".": "D7",
+        A: "D#7",
+        Q: "E7",
+        W: "F7",
+        E: "F#7",
+        R: "G7",
+        T: "G#7",
+        Y: "A7",
+        U: "A#7",
+        I: "B7",
+        O: "C8",
       };
 
       const frequencies = {
@@ -153,6 +173,10 @@
         "A#7": 3729.31,
         B7: 3951.07,
         C8: 4186.01,
+        "C#8": 4434.92,
+        D8: 4698.64,
+        "D#8": 4978.03,
+        E8: 5274.04,
       };
 
       function playSound(frequency) {
@@ -164,22 +188,29 @@
         oscillator.stop(audioContext.currentTime + 0.1);
       }
 
+      function displayNote(note) {
+        const noteDisplay = document.getElementById("noteDisplay");
+        noteDisplay.textContent = note;
+      }
+
       document.addEventListener("keydown", (event) => {
         const note = notes[event.key.toUpperCase()];
         if (note) {
           const frequency = frequencies[note];
           playSound(frequency);
+          displayNote(note);
         }
       });
 
       document.querySelectorAll(".key").forEach((key) => {
         key.addEventListener("click", () => {
-          const note = key.getAttribute("data-note");
-          const frequency = frequencies[notes[note]];
+          const keyNote = key.getAttribute("data-note");
+          const note = notes[keyNote];
+          const frequency = frequencies[note];
           playSound(frequency);
+          displayNote(note);
         });
       });
     </script>
   </body>
 </html>
-
