@@ -6,81 +6,94 @@
     <title>Teclado Musical</title>
     <style>
       body {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background-color: #f0f0f0;
-      }
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    padding: 0 10px;
+}
 
-      .note-display {
-        font-size: 24px;
-        margin-bottom: 20px;
-        height: 30px;
-      }
+.note-display {
+    font-size: 24px;
+    margin-bottom: 30px;
+    height: 30px;
+}
 
-      .keyboard {
-        display: grid;
-        grid-template-columns: repeat(10, 60px);
-        grid-gap: 10px;
-      }
+.keyboard {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-gap: 10px;
+    width: 100%;
+    max-width: 1000px; /* Ajusta según el diseño deseado */
+    padding: 0,25px,0,25px;
 
-      .key {
-        display: inline-block;
-        width: 50px;
-        height: 50px;
-        margin: 5px;
-        background: lightblue;
-        text-align: center;
-        line-height: 50px;
-        border-radius: 50%;
-        cursor: pointer;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: background 0.2s;
-      }
-      .keyN {
-        display: inline-block;
-        width: 50px;
-        height: 50px;
-        margin: 5px;
-        background: rgb(220, 118, 51 );
-        text-align: center;
-        line-height: 50px;
-        border-radius: 50%;
-        cursor: pointer;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: background 0.2s;
-      }
+    box-sizing: border-box;
+    position: relative;
+}
 
-      .key:active {
-        background: darkblue;
-        color: white;
-      }
+.key, .keyN {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px; /* Tamaño fijo para mantener la forma redonda */
+    height: 60px; /* Tamaño fijo para mantener la forma redonda */
+    background: lightblue;
+    text-align: center;
+    line-height: 60px; /* Alineación vertical del texto */
+    border-radius: 50%; /* Hace las teclas redondas */
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.2s;
+    font-size: 1.5em;
+}
 
-      .keyboard {
-        grid-template-rows: repeat(3, 60px);
-      }
+.keyN {
+    background: rgb(220, 118, 51);
+}
 
-      .row1 {
-        grid-row: 1;
-      }
-      
-      .row2 {
-        grid-row: 2;
-      }
-     
+.key:active, .keyN:active {
+    background: darkblue;
+    color: white;
+}
 
-      .row3 {
-        grid-row: 3;
-      }
-      
+.volume-slider, .transpose-slider {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.volume-slider {
+    margin-bottom: 20px;
+}
+
+/* Nueva posición de las filas */
+.row1 {
+    grid-row: 1;
+}
+
+.row2 {
+    grid-row: 2;
+    position: relative;
+    left: 30px; /* Desplazar a la derecha */
+}
+
+.row3 {
+    grid-row: 3;
+    position: relative;
+    left: 60px; /* Desplazar a la derecha más */
+}
     </style>
   </head>
   <body>
     <div class="note-display" id="noteDisplay"></div>
+    <div class="volume-control">
+      <label for="volumeSlider">Volumen:</label>
+      <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+    </div>
     <div class="keyboard">
       <div class="row1 key" data-note="Q">Q</div>
       <div class="row1 key" data-note="W">W</div>
@@ -179,13 +192,28 @@
         E8: 5274.04,
       };
 
-      function playSound(frequency) {
-        const oscillator = audioContext.createOscillator();
-        oscillator.type = "sine";
-        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-        oscillator.connect(audioContext.destination);
-        oscillator.start();
-        oscillator.stop(audioContext.currentTime + 0.1);
+      const activeOscillators = {};
+      let gainNode = audioContext.createGain();
+      gainNode.gain.value = 0.5; // Valor inicial del volumen
+      gainNode.connect(audioContext.destination);
+
+      function playSound(note) {
+        const frequency = frequencies[note];
+        if (!activeOscillators[note]) {
+          const oscillator = audioContext.createOscillator();
+          oscillator.type = "sine";
+          oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+          oscillator.connect(gainNode);
+          oscillator.start();
+          activeOscillators[note] = oscillator;
+        }
+      }
+
+      function stopSound(note) {
+        if (activeOscillators[note]) {
+          activeOscillators[note].stop();
+          delete activeOscillators[note];
+        }
       }
 
       function displayNote(note) {
@@ -194,22 +222,42 @@
       }
 
       document.addEventListener("keydown", (event) => {
-        const note = notes[event.key.toUpperCase()];
+        const key = event.key.toUpperCase();
+        const note = notes[key];
         if (note) {
-          const frequency = frequencies[note];
-          playSound(frequency);
+          playSound(note);
           displayNote(note);
         }
       });
 
+      document.addEventListener("keyup", (event) => {
+        const key = event.key.toUpperCase();
+        const note = notes[key];
+        if (note) {
+          stopSound(note);
+          displayNote('');
+        }
+      });
+
       document.querySelectorAll(".key").forEach((key) => {
-        key.addEventListener("click", () => {
+        key.addEventListener("mousedown", () => {
           const keyNote = key.getAttribute("data-note");
           const note = notes[keyNote];
-          const frequency = frequencies[note];
-          playSound(frequency);
+          playSound(note);
           displayNote(note);
         });
+
+        key.addEventListener("mouseup", () => {
+          const keyNote = key.getAttribute("data-note");
+          const note = notes[keyNote];
+          stopSound(note);
+          displayNote('');
+        });
+      });
+
+      document.getElementById("volumeSlider").addEventListener("input", (event) => {
+        const volume = event.target.value;
+        gainNode.gain.value = volume;
       });
     </script>
   </body>
