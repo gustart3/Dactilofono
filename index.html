@@ -1,90 +1,88 @@
 <!DOCTYPE html>
 <html lang="es">
   <head>
-    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Teclado Musical</title>
     <style>
       body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  padding: 0 10px;
 }
 
 .note-display {
-    font-size: 24px;
-    margin-bottom: 30px;
-    height: 30px;
+  font-size: 24px;
+  margin-bottom: 30px;
+  height: 30px;
 }
 
 .keyboard {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-gap: 10px;
-    width: 100%;
-    max-width: 1000px; /* Ajusta según el diseño deseado */
-    padding: 0,25px,0,25px;
-
-    box-sizing: border-box;
-    position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  grid-gap: 10px;
+  width: 100%;
+  max-width: 1000px; /* Ajusta según el diseño deseado */
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .key, .keyN {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 60px; /* Tamaño fijo para mantener la forma redonda */
-    height: 60px; /* Tamaño fijo para mantener la forma redonda */
-    background: lightblue;
-    text-align: center;
-    line-height: 60px; /* Alineación vertical del texto */
-    border-radius: 50%; /* Hace las teclas redondas */
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background 0.2s;
-    font-size: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10vw; /* Ajustar según el diseño deseado */
+  height: 10vw; /* Mantener la proporción circular */
+  background: lightblue;
+  text-align: center;
+  line-height: 10vw; /* Alineación vertical del texto */
+  border-radius: 50%; /* Hace las teclas redondas */
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.2s;
+  font-size: 1.5em;
 }
 
 .keyN {
-    background: rgb(220, 118, 51);
+  background: rgb(220, 118, 51);
 }
 
 .key:active, .keyN:active {
-    background: darkblue;
-    color: white;
+  background: darkblue;
+  color: white;
 }
 
 .volume-slider, .transpose-slider {
-    margin-top: 20px;
-    width: 100%;
-    max-width: 300px;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 300px;
 }
 
 .volume-slider {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 /* Nueva posición de las filas */
 .row1 {
-    grid-row: 1;
+  grid-row: 1;
 }
 
 .row2 {
-    grid-row: 2;
-    position: relative;
-    left: 30px; /* Desplazar a la derecha */
+  grid-row: 2;
+  position: relative;
+  left: 30px; /* Desplazar a la derecha */
 }
 
 .row3 {
-    grid-row: 3;
-    position: relative;
-    left: 60px; /* Desplazar a la derecha más */
+  grid-row: 3;
+  position: relative;
+  left: 60px; /* Desplazar a la derecha más */
 }
     </style>
   </head>
@@ -259,6 +257,26 @@
         const volume = event.target.value;
         gainNode.gain.value = volume;
       });
+
+document.querySelectorAll(".key").forEach((key) => {
+  key.addEventListener("mousedown", () => handleKeyInteraction(key));
+  key.addEventListener("mouseup", () => handleKeyInteraction(key, false));
+  key.addEventListener("touchstart", () => handleKeyInteraction(key));
+  key.addEventListener("touchend", () => handleKeyInteraction(key, false));
+});
+
+function handleKeyInteraction(key, isPressed = true) {
+  const keyNote = key.getAttribute("data-note");
+  const note = notes[keyNote];
+  if (isPressed) {
+    playSound(note);
+    displayNote(note);
+  } else {
+    stopSound(note);
+    displayNote('');
+  }
+}
+      
     </script>
   </body>
 </html>
