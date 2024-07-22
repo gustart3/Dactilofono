@@ -40,7 +40,6 @@
         color: white;
       }
 
-      /* QWERTY keyboard layout */
       .keyboard {
         grid-template-rows: repeat(3, 60px);
       }
@@ -60,69 +59,72 @@
   </head>
   <body>
     <div class="keyboard">
-      <div class="keyboard">
-    <div class="row1 key" data-note="Q">Q</div>
-    <div class="row1 key" data-note="W">W</div>
-    <div class="row1 key" data-note="E">E</div>
-    <div class="row1 key" data-note="R">R</div>
-    <div class="row1 key" data-note="T">T</div>
-    <div class="row1 key" data-note="Y">Y</div>
-    <div class="row1 key" data-note="U">U</div>
-    <div class="row1 key" data-note="I">I</div>
-    <div class="row1 key" data-note="O">O</div>
-    <div class="row1 key" data-note="P">P</div>
+      <div class="row1 key" data-note="Q">Q</div>
+      <div class="row1 key" data-note="W">W</div>
+      <div class="row1 key" data-note="E">E</div>
+      <div class="row1 key" data-note="R">R</div>
+      <div class="row1 key" data-note="T">T</div>
+      <div class="row1 key" data-note="Y">Y</div>
+      <div class="row1 key" data-note="U">U</div>
+      <div class="row1 key" data-note="I">I</div>
+      <div class="row1 key" data-note="O">O</div>
+      <div class="row1 key" data-note="P">P</div>
 
-    <div class="row2 key" data-note="A">A</div>
-    <div class="row2 key" data-note="S">S</div>
-    <div class="row2 key" data-note="D">D</div>
-    <div class="row2 key" data-note="F">F</div>
-    <div class="row2 key" data-note="G">G</div>
-    <div class="row2 key" data-note="H">H</div>
-    <div class="row2 key" data-note="J">J</div>
-    <div class="row2 key" data-note="K">K</div>
-    <div class="row2 key" data-note="L">L</div>
-    <div class="row2 key" data-note="Ñ">Ñ</div>
+      <div class="row2 key" data-note="A">A</div>
+      <div class="row2 key" data-note="S">S</div>
+      <div class="row2 key" data-note="D">D</div>
+      <div class="row2 key" data-note="F">F</div>
+      <div class="row2 key" data-note="G">G</div>
+      <div class="row2 key" data-note="H">H</div>
+      <div class="row2 key" data-note="J">J</div>
+      <div class="row2 key" data-note="K">K</div>
+      <div class="row2 key" data-note="L">L</div>
+      <div class="row2 key" data-note="Ñ">Ñ</div>
 
-    <div class="row3 key" data-note="Z">Z</div>
-    <div class="row3 key" data-note="X">X</div>
-    <div class="row3 key" data-note="C">C</div>
-    <div class="row3 key" data-note="V">V</div>
-    <div class="row3 key" data-note="B">B</div>
-    <div class="row3 key" data-note="N">N</div>
-    <div class="row3 key" data-note="M">M</div>
-    <div class="row3 key" data-note=",">,</div>
-    <div class="row3 key" data-note=".">.</div>
+      <div class="row3 key" data-note="Z">Z</div>
+      <div class="row3 key" data-note="X">X</div>
+      <div class="row3 key" data-note="C">C</div>
+      <div class="row3 key" data-note="V">V</div>
+      <div class="row3 key" data-note="B">B</div>
+      <div class="row3 key" data-note="N">N</div>
+      <div class="row3 key" data-note="M">M</div>
+      <div class="row3 key" data-note=",">,</div>
+      <div class="row3 key" data-note=".">.</div>
     </div>
     <script>
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       const audioContext = new AudioContext();
 
       const notes = {
-        Z: "C6",
-        S: "C#6",
-        X: "D6",
-        D: "D#6",
-        C: "E6",
-        V: "F6",
-        G: "F#6",
-        B: "G6",
-        H: "G#6",
-        N: "A6",
-        J: "A#6",
-        M: "B6",
-        ",": "C7",
-        L: "C#7",
-        ".": "D7",
-        A: "D#7",
-        Q: "E7",
-        W: "F7",
-        E: "F#7",
-        R: "G7",
-        T: "G#7",
-        Y: "A7",
-        U: "A#7",
-        I: "B7",
-        O: "C8",
+        Q: "C6",
+        W: "C#6",
+        E: "D6",
+        R: "D#6",
+        T: "E6",
+        Y: "F6",
+        U: "F#6",
+        I: "G6",
+        O: "G#6",
+        P: "A6",
+        A: "A#6",
+        S: "B6",
+        D: "C7",
+        F: "C#7",
+        G: "D7",
+        H: "D#7",
+        J: "E7",
+        K: "F7",
+        L: "F#7",
+        Ñ: "G7",
+        Z: "G#7",
+        X: "A7",
+        C: "A#7",
+        V: "B7",
+        B: "C8",
+        N: "C#8",
+        M: "D8",
+        ",": "D#8",
+        ".": "E8",
       };
 
       const frequencies = {
@@ -156,10 +158,7 @@
       function playSound(frequency) {
         const oscillator = audioContext.createOscillator();
         oscillator.type = "sine";
-        oscillator.frequency.setValueAtTime(
-          frequency,
-          audioContext.currentTime
-        );
+        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
         oscillator.connect(audioContext.destination);
         oscillator.start();
         oscillator.stop(audioContext.currentTime + 0.1);
@@ -176,10 +175,11 @@
       document.querySelectorAll(".key").forEach((key) => {
         key.addEventListener("click", () => {
           const note = key.getAttribute("data-note");
-          const frequency = frequencies[note];
+          const frequency = frequencies[notes[note]];
           playSound(frequency);
         });
       });
     </script>
   </body>
 </html>
+
