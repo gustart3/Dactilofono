@@ -1,0 +1,85 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  padding: 0 10px;
+}
+
+.note-display {
+  font-size: 24px;
+  margin-bottom: 30px;
+  height: 30px;
+}
+
+.keyboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  grid-gap: 5px;
+  width: 90%;
+  max-width: 1200px;
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+.key,
+.keyN {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 7vw;
+  height: 7vw;
+  background: lightblue;
+  text-align: center;
+  line-height: 10vw;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background 0.2s;
+  font-size: 1.5em;
+}
+
+.keyN {
+  background: rgb(220, 118, 51);
+}
+
+.key:active,
+.keyN:active {
+  background: darkblue;
+  color: white;
+}
+
+.volume-slider,
+.transpose-slider {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.volume-slider {
+  margin-bottom: 20px;
+}
+
+.scale-control {
+  margin-bottom: 20px;
+}
+
+.row1 {
+  grid-row: 1;
+}
+
+.row2 {
+  grid-row: 2;
+  position: relative;
+  left: 30px;
+}
+
+.row3 {
+  grid-row: 3;
+  position: relative;
+  left: 60px;
+}
