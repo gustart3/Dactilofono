@@ -487,8 +487,8 @@ function playSound(note) {
 function stopSound(note) {
   if (activeOscillators[note]) {
     const { oscillator, gainNode } = activeOscillators[note];
-    gainNode.gain.setTargetAtTime(0, audioContext.currentTime, 0.1); // Reverberación al soltar
-    oscillator.stop(audioContext.currentTime + 0.1); // Detener después de un corto retraso
+    gainNode.gain.setTargetAtTime(0, audioContext.currentTime, 0.2); // Reverberación al soltar
+    oscillator.stop(audioContext.currentTime + 0.04); // Detener después de un corto retraso
     delete activeOscillators[note];
   }
 }
