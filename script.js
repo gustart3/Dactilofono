@@ -475,6 +475,12 @@ function playSound(note) {
     oscillator.start();
 
     activeOscillators[note] = { oscillator, gainNode: noteGainNode };
+
+    setTimeout(() => {
+      if (activeOscillators[note]) {
+        stopSound(note);
+      }
+    }, 100); // Detener el sonido si la tecla sigue presionada después de 100ms
   }
 }
 
@@ -556,4 +562,3 @@ document.getElementById("scaleSelector").addEventListener("input", (event) => {
   const scale = parseInt(event.target.value, 10);
   updateScale(scale);
 });
-
