@@ -485,7 +485,7 @@ function playSound(note) {
 
     const noteGainNode = audioContext.createGain();
     noteGainNode.gain.setValueAtTime(0, audioContext.currentTime);
-    noteGainNode.gain.linearRampToValueAtTime(gainNode.gain.value, audioContext.currentTime + 0.01);
+    noteGainNode.gain.linearRampToValueAtTime(gainNode.gain.value, audioContext.currentTime + 0.005);
 
     const reverb = audioContext.createConvolver();
     reverb.buffer = createReverbBuffer(audioContext); // Añadir reverb
@@ -501,15 +501,15 @@ function playSound(note) {
       if (activeOscillators[note]) {
         stopSound(note);
       }
-    }, 100); // Detener el sonido si la tecla sigue presionada después de 100ms
+    }, 10); // Detener el sonido si la tecla sigue presionada después de 100ms
   }
 }
 
 function stopSound(note) {
   if (activeOscillators[note]) {
     const { oscillator, gainNode } = activeOscillators[note];
-    gainNode.gain.setTargetAtTime(0, audioContext.currentTime, 1); // Reverberación al soltar
-    oscillator.stop(audioContext.currentTime + 0.04); // Detener después de un corto retraso
+    gainNode.gain.setTargetAtTime(0, audioContext.currentTime, 0.8); // Reverberación al soltar
+    oscillator.stop(audioContext.currentTime + 0.08); // Detener después de un corto retraso
     delete activeOscillators[note];
   }
 }
