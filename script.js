@@ -1,4 +1,4 @@
-/*
+
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioContext = new AudioContext();
 let currentScale = 3; // Iniciar con la tercera escala por defecto
@@ -288,8 +288,8 @@ document.getElementById("scaleSelector").addEventListener("input", (event) => {
   const scale = parseInt(event.target.value, 10);
   updateScale(scale);
 });
-*/
 
+/*
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioContext = new AudioContext();
 let currentScale = 3; // Iniciar con la tercera escala por defecto
@@ -576,3 +576,4 @@ function createReverbBuffer(audioContext) {
 
   return impulse;
 }
+*/
