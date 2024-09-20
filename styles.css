@@ -10,15 +10,20 @@ body {
   padding: 0 10px;
 }
 
-.note-display {
+#noteDisplay {
+  position: absolute; /* Fija la posición para que no altere el layout */
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%); /* Centrar horizontalmente */
   font-size: 2rem;
-  text-align: center;
-  transition: transform 0.2s ease, color 0.2s ease;
+  width: 150px; /* Ancho fijo para evitar cambios de tamaño */
+  text-align: center; /* Alinear el texto al centro */
+  color: #333;
+  padding: 10px;
 }
 
-.note-display.active {
-  transform: scale(1.2);
-  color: #ff6347;
+#noteDisplay.active {
+  color: #ff5733; /* Cambia el color o el estilo cuando la nota está activa */
 }
 
 .keyboard {
@@ -46,6 +51,12 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: background 0.2s;
   font-size: 1.5em;
+
+  /* Borde externo */
+  border: 4px solid #333; /* Borde externo alrededor del círculo */
+
+  /* Borde interno (simulado con box-shadow) */
+  box-shadow: inset 0 0 0 4px white; /* Borde interno más pequeño */
 }
 
 .keyN {
@@ -56,6 +67,8 @@ body {
 .keyN:active {
   background: darkblue;
   color: white;
+  border-color: yellow; /* Cambia el color del borde al hacer clic */
+  box-shadow: inset 0 0 0 4px #ffcc00; /* Cambia el borde interno al hacer clic */
 }
 
 .volume-slider,
