@@ -213,8 +213,8 @@ function playSound(note) {
 function stopSound(note) {
   if (activeOscillators[note]) {
     const { oscillator, gainNode } = activeOscillators[note];
-    gainNode.gain.setTargetAtTime(0, audioContext.currentTime, 1); // Reverberación al soltar
-    oscillator.stop(audioContext.currentTime + 0.04); // Detener después de un corto retraso
+    gainNode.gain.setTargetAtTime(0, audioContext.currentTime, 0.1); // Ajusta el tiempo de fade-out
+    oscillator.stop(audioContext.currentTime + 0.1); // Detiene después de que el sonido se atenúa
     delete activeOscillators[note];
   }
 }
@@ -222,6 +222,11 @@ function stopSound(note) {
 function displayNote(note) {
   const noteDisplay = document.getElementById("noteDisplay");
   noteDisplay.textContent = note;
+  noteDisplay.classList.add("active");
+
+  setTimeout(() => {
+    noteDisplay.classList.remove("active");
+  }, 200);
 }
 
 function updateScale(scale) {
