@@ -361,6 +361,11 @@ const gainNode = audioContext.createGain();
 gainNode.gain.value = 0.5; // Valor inicial del volumen
 gainNode.connect(audioContext.destination);
 
+// Variable para manejar el estado de la barra espaciadora
+let spacebarPressed = false;
+// Guardar el volumen ajustado por el usuario
+let userVolume = gainNode.gain.value;
+
 function playSound(note) {
   const frequency = frequencies[note];
   if (!activeOscillators[note]) {
@@ -395,9 +400,22 @@ function stopSound(note) {
   }
 }
 
-// Fade-out al presionar la barra espaciadora
+// Función para aplicar el efecto de "fade-out" al presionar la barra espaciadora
 function handleSpaceFadeOut() {
-  gainNode.gain.setTargetAtTime(0.0001, audioContext.currentTime, 0.5); // Duración del fade-out
+  spacebarPressed = true;
+  // Guardar el volumen actual del usuario
+  userVolume = gainNode.gain.value;
+  // Reducir el volumen simulando el efecto de eco
+  gainNode.gain.setTargetAtTime(userVolume * 0.2, audioContext.currentTime, 0.5); // Reducir volumen a 20%
+}
+
+// Función para restaurar el volumen cuando se suelta la barra espaciadora
+function handleSpaceRelease() {
+  if (spacebarPressed) {
+    spacebarPressed = false;
+    // Restaurar el volumen al nivel ajustado por el usuario
+    gainNode.gain.setTargetAtTime(userVolume, audioContext.currentTime, 0.1); // Volver al volumen del usuario
+  }
 }
 
 document.addEventListener("keydown", (event) => {
@@ -417,6 +435,8 @@ document.addEventListener("keyup", (event) => {
   if (note) {
     stopSound(note);
     displayNote("");
+  } else if (event.code === "Space") {
+    handleSpaceRelease();
   }
 });
 
@@ -435,6 +455,7 @@ function updateScale(scale) {
   notes = scales[currentScale].notes;
   frequencies = scales[currentScale].frequencies;
 }
+
 //aca termina el codigo nuevo
 /*
 const AudioContext = window.AudioContext || window.webkitAudioContext;
