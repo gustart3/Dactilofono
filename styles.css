@@ -11,9 +11,14 @@ body {
 }
 
 .note-display {
-  font-size: 24px;
-  margin-bottom: 30px;
-  height: 30px;
+  font-size: 2rem;
+  text-align: center;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.note-display.active {
+  transform: scale(1.2);
+  color: #ff6347;
 }
 
 .keyboard {
